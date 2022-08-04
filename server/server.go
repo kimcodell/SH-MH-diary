@@ -10,14 +10,12 @@ import (
 
 func main() {
 	r := gin.Default()
-	
+
 	r.GET("/", func(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-      "message": "pong",
-    })
-  })
-	
+		c.String(http.StatusOK, "SH ❤️ MH Diary Server")
+	})
+
 	routers.ConnectPostRouter(r)
 
-  r.Run()
+	r.Run(":8000")
 }
