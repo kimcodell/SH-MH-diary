@@ -3,36 +3,36 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"time"
 
-	"github.com/go-sql-driver/mysql"
 	"github.com/kimcodell/SH-MH-diary/server/utils"
+
+	"github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
-func ConnectToDB() {
-	db := getConnector()
-	err := db.Ping()
-	if err != nil {
-		panic(err)
-	}
-	var name interface{}
-	err = db.QueryRow("SELECT * FROM post WHERE id = 1").Scan(&name)
-	utils.CatchError(err)
-	fmt.Println(name)
-	print("success")
-}
+func GetConnectedDB() *sql.DB {
+	loadEnvError := godotenv.Load()
+	utils.CatchError(utils.ErrorParams{Err: loadEnvError, Message: "Fail to load env file."})
 
-func getConnector() *sql.DB {
+	dbUserName := os.Getenv("DB_USER_NAME")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbSchemaName := os.Getenv("DB_SCHEMA_NAME")
 	config := mysql.Config{
-		User:      "root",
-		Passwd:    "jordan11",
-		Addr:      "127.0.0.1:3306",
-		Collation: "utf8mb4_general_ci",
-		Loc:       time.Local,
-		DBName:    "sh-mh-diary",
+		User:                 dbUserName,
+		Passwd:               dbPassword,
+		Net:                  "tcp",
+		Addr:                 "127.0.0.1:3306",
+		Collation:            "utf8mb4_general_ci",
+		Loc:                  time.Local,
+		DBName:               dbSchemaName,
+		AllowNativePasswords: true,
 	}
-	connector, err := mysql.NewConnector(&config)
-	utils.CatchError(err)
+	connector, connectionError := mysql.NewConnector(&config)
+	utils.CatchError(utils.ErrorParams{Err: connectionError})
+	fmt.Println("Success to connect")
+
 	db := sql.OpenDB(connector)
 	return db
 }
