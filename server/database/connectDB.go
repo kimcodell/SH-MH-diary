@@ -29,8 +29,11 @@ func GetConnectedDB() *sql.DB {
 		DBName:               dbSchemaName,
 		AllowNativePasswords: true,
 	}
+
+	// db, dbConnectError := sql.Open("mysql", config.FormatDSN())
+	// utils.CatchError(utils.ErrorParams{Err: dbConnectError, Message: "Fail to Open DB"})
 	connector, connectionError := mysql.NewConnector(&config)
-	utils.CatchError(utils.ErrorParams{Err: connectionError})
+	utils.CatchError(utils.ErrorParams{Err: connectionError, Message: "Fail to Open DB"})
 	fmt.Println("Success to connect")
 
 	db := sql.OpenDB(connector)
