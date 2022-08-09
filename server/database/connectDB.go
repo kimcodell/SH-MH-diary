@@ -39,3 +39,11 @@ func GetConnectedDB() *sql.DB {
 	db := sql.OpenDB(connector)
 	return db
 }
+
+func ConnectToDB() (*sql.DB, error) {
+	db := GetConnectedDB()
+	err := db.Ping()
+	utils.CatchError(utils.ErrorParams{Err: err})
+
+	return db, err
+}
