@@ -10,6 +10,8 @@ import (
 
 func main() {
 	r := gin.Default()
+	
+	r.Use(gin.Recovery())
 
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "SH ❤️ MH Diary Server")
