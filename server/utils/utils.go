@@ -1,6 +1,9 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 type ErrorParams struct {
 	Err     error
@@ -9,7 +12,6 @@ type ErrorParams struct {
 
 func CatchError(err ErrorParams) {
 	if err.Err != nil {
-		fmt.Println(fmt.Errorf("err : %v\nmessage: %q", err.Err, err.Message))
-		panic(err)
+		log.Fatal(fmt.Errorf("err : %v\nmessage: %q", err.Err, err.Message))
 	}
 }

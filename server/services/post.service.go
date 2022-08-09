@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/kimcodell/SH-MH-diary/server/repositories"
+	"github.com/kimcodell/SH-MH-diary/server/types"
 	"github.com/kimcodell/SH-MH-diary/server/utils"
 
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,17 @@ func GetPostById(c *gin.Context) {
 }
 
 func CreatePost(c *gin.Context) {
+	var params types.PostCreateDto
+	if err := c.ShouldBindJSON(&params); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	
+	isSuccess := repositories.CreatePost(params)
 
-	repositories.CreatePost()
-	c.JSON(http.StatusOK, gin.H{"success": true})
+	statusCode := http.StatusOK
+	if !isSuccess {
+		statusCode = http.StatusInternalServerError
+	}
+	c.JSON(statusCode, gin.H{"success": isSuccess})	
 }

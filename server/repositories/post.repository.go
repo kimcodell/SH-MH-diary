@@ -10,9 +10,9 @@ import (
 )
 
 func GetAllPosts() types.Posts {
-	db := database.GetConnectedDB()
-	err := db.Ping()
-	utils.CatchError(utils.ErrorParams{Err: err})
+	db, dbConnectErr := database.ConnectToDB()
+	fmt.Println("Error :", dbConnectErr)
+	defer db.Close()
 
 	rows, queryError := db.Query("SELECT id, title, created_at FROM post WHERE is_deleted = 0")
 	utils.CatchError(utils.ErrorParams{Err: queryError, Message: "Fail to execute SQL Query."})
@@ -35,9 +35,9 @@ func GetAllPosts() types.Posts {
 }
 
 func GetPostById(id int) types.Post {
-	db := database.GetConnectedDB()
-	err := db.Ping()
-	utils.CatchError(utils.ErrorParams{Err: err})
+	db, dbConnectErr := database.ConnectToDB()
+	fmt.Println("Error :", dbConnectErr)
+	defer db.Close()
 
 	var post types.Post
 
@@ -52,14 +52,30 @@ func GetPostById(id int) types.Post {
 	if scanError == sql.ErrNoRows {
 		fmt.Println(fmt.Errorf("err : %v\nmessage: There are no SQL query result", scanError))
 		panic(scanError)
+	} else {
+		utils.CatchError(utils.ErrorParams{Err: scanError, Message: "Fail to scan row"})
 	}
-	utils.CatchError(utils.ErrorParams{Err: scanError, Message: "Fail to scan row"})
-
-	defer db.Close()
 
 	return post
 }
 
-func CreatePost() {
+func CreatePost(params types.PostCreateDto) bool {
+	db, dbConnectErr := database.ConnectToDB()
+	fmt.Println("Error :", dbConnectErr)
+	defer db.Close()
 
+	result, queryError := db.Exec(`INSERT INTO post (title, content, userId) VALUES (?, ?, ?)`, params.Title, params.Content, params.UserId)
+	utils.CatchError(utils.ErrorParams{Err: queryError, Message: "Fail to insert new post query"})
+
+	affectedCount, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	if (affectedCount != 1) {
+		utils.CatchError(utils.ErrorParams{Err: fmt.Errorf("fail to create the post"), Message: "Fail to create the post"})
+		return false
+	}
+
+	return true
 }

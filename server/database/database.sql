@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS sh_mh_diary;
+USE sh_mh_diary;
+
+DROP TABLE IF EXISTS `post`;
+CREATE TABLE `sh_mh_diary`.`post` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(100) NOT NULL,
+  `content` TEXT NOT NULL,
+  `userId` INT NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_deleted` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`));
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `sh_mh_diary`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`));
+
+INSERT INTO `sh_mh_diary`.`user` (`name`) VALUES ('녀기');
+INSERT INTO `sh_mh_diary`.`user` (`name`) VALUES ('혀니');
