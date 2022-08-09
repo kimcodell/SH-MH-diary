@@ -38,5 +38,25 @@ func CreatePost(c *gin.Context) {
 	if !isSuccess {
 		statusCode = http.StatusInternalServerError
 	}
-	c.JSON(statusCode, gin.H{"success": isSuccess})	
+	c.JSON(statusCode, gin.H{"success": isSuccess})
+}
+
+func UpdatePostById(c *gin.Context) {
+	var params types.PostCreateDto
+	if err := c.ShouldBindJSON(&params); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	isSuccess := repositories.UpdatePost(params)
+
+	statusCode := http.StatusOK
+	if !isSuccess {
+		statusCode = http.StatusInternalServerError
+	}
+	c.JSON(statusCode, gin.H{"success": isSuccess})
+}
+
+func DeletePostById(c *gin.Context) {
+
 }

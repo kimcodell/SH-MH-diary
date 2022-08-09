@@ -79,3 +79,26 @@ func CreatePost(params types.PostCreateDto) bool {
 
 	return true
 }
+
+func UpdatePost(params types.PostCreateDto) bool {
+	db, dbConnectErr := database.ConnectToDB()
+	fmt.Println("Error :", dbConnectErr)
+	defer db.Close()
+
+	//TODO
+
+	result, queryError := db.Exec(`UPDATE `,) //TODO 쿼리 추가
+	utils.CatchError(utils.ErrorParams{Err: queryError, Message: "Fail to update post query"})
+
+	affectedCount, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	if (affectedCount != 1) {
+		utils.CatchError(utils.ErrorParams{Err: fmt.Errorf("fail to update the post"), Message: "Fail to update the post"})
+		return false
+	}
+
+	return true
+}
