@@ -14,3 +14,8 @@ type Post struct {
 }
 
 type Posts []SimplePost
+
+type UserPosts struct {
+	Author string
+	Posts  Posts
+}

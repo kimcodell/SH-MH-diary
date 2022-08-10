@@ -14,4 +14,5 @@ func ConnectPostRouter(router *gin.Engine) {
 	postRouter.POST("/", services.CreatePost)
 	postRouter.PUT("/:id", services.UpdatePostById)
 	postRouter.DELETE("/:id", services.DeletePostById)
+	postRouter.GET("/users", services.GetUsersPosts)
 }
