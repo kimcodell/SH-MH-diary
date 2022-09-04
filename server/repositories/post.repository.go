@@ -145,16 +145,18 @@ func DeletePost(postId int) bool {
 	return true
 }
 
-func GetUsersPosts() (types.UserPosts, error) {
+func GetUsersPosts() ([]types.UserPosts, error) {
 	db, dbConnectErr := database.ConnectToDB()
 	if dbConnectErr != nil {
 		fmt.Println("Error :", dbConnectErr)
-		return types.UserPosts{}, dbConnectErr
+		return []types.UserPosts{}, dbConnectErr
 	}
 	defer db.Close()
 
 	//TODO
-	rows, queryError := db.Query("SELECT id, title, created_at FROM post WHERE is_deleted = 0")
+	var data []types.UserPosts
+
+	rows, queryError := db.Query("SELECT id, title, created_at FROM post WHERE is_deleted = 0 AND user_id = 1")
 	utils.CatchError(utils.ErrorParams{Err: queryError, Message: "Fail to execute SQL Query."})
 	defer rows.Close()
 
