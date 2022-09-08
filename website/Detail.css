@@ -1,6 +1,7 @@
 body {
   margin-left: 25%;
   margin-right: 25%;
+  background-color: pink;
 }
 
 h1 {
@@ -22,4 +23,25 @@ h1 {
   margin-top: 10px;
   min-height: 400px;
   margin-bottom: 100px;
+}
+
+.button-container{
+  display: flex;
+  column-gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.button{
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.delete-button {
+  background-color: rgb(221, 112, 112);
+
+}
+.edit-button{
+  background-color: rgb(99, 148, 221);
+
 }
