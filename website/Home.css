@@ -1,14 +1,10 @@
-div {
-}
-
 h1 {
   text-align: center;
 }
+
 a {
   text-decoration: none;
   color: black;
-}
-.subtitle {
 }
 
 body {
@@ -25,12 +21,15 @@ body {
   border-radius: 6px;
   margin: 10px 0;
 }
+
 .title {
   font-weight: bold;
 }
+
 .created_at {
   font-size: 12px;
 }
-.created_at{
-    font-size: 12px;
+
+.created_at {
+  font-size: 12px;
 }
